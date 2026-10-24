@@ -1,4 +1,5 @@
 """Review aggregation with credibility weighting and integrity filters."""
+
 from __future__ import annotations
 
 import math
@@ -35,20 +36,33 @@ class Review:
 
 
 def load_reviews(items: list[dict]) -> list[Review]:
-    return [Review(i["model"], i["reviewer"], i.get("kind", "audience"), float(i["rating"]), i.get("tags", []),
-                   float(i.get("hours", 0)), i.get("text", ""), datetime.fromisoformat(i["ts"])) for i in items]
+    return [
+        Review(
+            i["model"],
+            i["reviewer"],
+            i.get("kind", "audience"),
+            float(i["rating"]),
+            i.get("tags", []),
+            float(i.get("hours", 0)),
+            i.get("text", ""),
+            datetime.fromisoformat(i["ts"]),
+        )
+        for i in items
+    ]
 
 
 def _shingles(text, k=3):
     words = re.findall(r"\w+", text.lower())
-    return {tuple(words[i:i + k]) for i in range(max(1, len(words) - k + 1))}
+    return {tuple(words[i : i + k]) for i in range(max(1, len(words) - k + 1))}
 
 
 def _jaccard(a, b):
     return len(a & b) / len(a | b) if a and b else 0.0
 
 
-def filter_reviews(reviews: list[Review], burst_window=timedelta(hours=1), burst_size=5) -> tuple[list[Review], list[Review]]:
+def filter_reviews(
+    reviews: list[Review], burst_window=timedelta(hours=1), burst_size=5
+) -> tuple[list[Review], list[Review]]:
     """Return (kept, rejected) after one-per-reviewer, near-duplicate and burst checks."""
     kept, rejected, seen = [], [], set()
     by_model = defaultdict(list)
@@ -60,7 +74,9 @@ def filter_reviews(reviews: list[Review], burst_window=timedelta(hours=1), burst
             continue
         seen.add(key)
         sh = _shingles(r.text)
-        if len(r.text.split()) >= 4 and any(_jaccard(sh, _shingles(o.text)) > 0.8 for o in by_model[r.model] if o.reviewer != r.reviewer):
+        if len(r.text.split()) >= 4 and any(
+            _jaccard(sh, _shingles(o.text)) > 0.8 for o in by_model[r.model] if o.reviewer != r.reviewer
+        ):
             r.flags.append("near-duplicate text")
             rejected.append(r)
             continue
@@ -68,7 +84,7 @@ def filter_reviews(reviews: list[Review], burst_window=timedelta(hours=1), burst
         kept.append(r)
     # brigading: >= burst_size same-polarity audience reviews inside the window
     final = []
-    for model, items in by_model.items():
+    for _model, items in by_model.items():
         aud = [r for r in items if r.kind == "audience"]
         burst_ids = set()
         for i, r in enumerate(aud):

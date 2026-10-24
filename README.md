@@ -1,5 +1,7 @@
 # model-tomatoes
 
+[![CI](https://github.com/eliem08/model-tomatoes/actions/workflows/ci.yml/badge.svg)](https://github.com/eliem08/model-tomatoes/actions/workflows/ci.yml)
+
 > **Rotten Tomatoes for AI models** — real reviews instead of benchmarks.
 
 Benchmarks are saturated and gamed. What people actually want to know is
@@ -34,3 +36,26 @@ model-tomatoes model examples/reviews.json "Nova-3"
 - Verified usage via API-key-signed attestations (proof you actually used it)
 - Side-by-side "critics consensus" summaries generated from review text
 - Embeddable badges for model cards
+
+## Development
+
+Zero runtime dependencies; Python 3.10+.
+
+```bash
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
+python -m unittest discover -s tests -t .           # unit + CLI smoke tests
+ruff check . && ruff format --check .               # lint + format
+```
+
+```
+model_tomatoes/core.py       domain logic (pure, importable, fully tested)
+model_tomatoes/__main__.py   CLI (`model-tomatoes ...` / `python -m model_tomatoes ...`)
+tests/                unit tests + generated CLI smoke tests
+examples/             sample inputs used by the docs and smoke tests
+```
+
+CI runs lint and tests on Ubuntu and Windows across Python 3.10, 3.12 and 3.13.
+Design, data model, trade-offs and production path: **[ARCHITECTURE.md](ARCHITECTURE.md)**.
+
+Part of the [agent-economy](https://github.com/eliem08/agent-economy) portfolio (idea #20).
