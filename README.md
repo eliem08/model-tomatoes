@@ -46,7 +46,7 @@ Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless
 | **Pro** | $149 per month | Embeddable meters; Reviewer credibility tuning; Exports |
 | **Vendor Insights** | $999 per month | Competitive review analytics; Alerts; Priority support |
 
-To start a trial or buy a plan, email **sales@YOUR-DOMAIN.com**.
+To start a trial or buy a plan, [request access](https://github.com/eliem08/model-tomatoes/issues/new?title=Model%20Tomatoes%20trial&labels=sales).
 
 ## Licence
 
