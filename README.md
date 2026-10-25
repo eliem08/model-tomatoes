@@ -1,15 +1,44 @@
-# model-tomatoes
+<!-- sell-kit:start -->
+# Model Tomatoes
 
 [![CI](https://github.com/eliem08/model-tomatoes/actions/workflows/ci.yml/badge.svg)](https://github.com/eliem08/model-tomatoes/actions/workflows/ci.yml)
 
-> **Rotten Tomatoes for AI models** — real reviews instead of benchmarks.
+> **Real reviews of AI models from real users, not benchmarks.**
 
-Benchmarks are saturated and gamed. What people actually want to know is
-"is this model good at *my* thing?" `model-tomatoes` aggregates reviews from
-practitioners — tagged by use case and weighted by verified usage — into a
-Tomatometer (critics), an Audience Score, and per-use-case scores.
+**Who it's for:** Teams choosing between AI models, and the communities that review them.
 
-## What the MVP does
+**The problem:** Benchmarks don't predict how a model performs on your use case, and open reviews get brigaded.
+
+**What you get:** A credibility-weighted fresh/rotten meter per use case, with filters for duplicate reviewers, copied text, review bursts and inflated usage claims.
+
+## Quickstart
+
+Customers receive a release archive with the wheel and the examples. Python 3.10+ and no other dependencies.
+
+```bash
+pip install model_tomatoes-0.1.0-py3-none-any.whl
+model-tomatoes scores examples/reviews.json
+model-tomatoes model examples/reviews.json Nova-3
+```
+
+## Pricing
+
+Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless noted.
+
+| Plan | Price | Includes |
+|---|---|---|
+| **Community** | $29 per month | Run your own review board; Integrity filters; Use-case scores |
+| **Pro** | $149 per month | Embeddable meters; Reviewer credibility tuning; Exports |
+| **Vendor Insights** | $999 per month | Competitive review analytics; Alerts; Priority support |
+
+To start a trial or buy a plan, email **sales@YOUR-DOMAIN.com**.
+
+## Licence
+
+Proprietary. Copyright (c) 2026 eliem08. All rights reserved. Use requires a paid plan or an active trial; see [LICENSE](LICENSE).
+<!-- sell-kit:end -->
+
+## What it does
 
 - **Reviews**: model, reviewer, `critic` (verified practitioner) or `audience`,
   rating 0–5, use-case tags (`coding`, `writing`, `agents`, `rag`…), text, timestamp,

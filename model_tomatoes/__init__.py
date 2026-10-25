@@ -1,4 +1,4 @@
-"""Rotten Tomatoes for AI models: real reviews instead of benchmarks."""
+"""Model Tomatoes: Real reviews of AI models from real users, not benchmarks."""
 
 from .core import *
 
