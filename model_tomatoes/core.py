@@ -12,6 +12,8 @@ __all__ = ["Review", "load_reviews", "filter_reviews", "scores", "FRESH_THRESHOL
 
 FRESH_THRESHOLD = 3.5
 CERTIFIED = (0.75, 20)
+MAX_HOURS = 2000  # self-reported usage; past ~a year of daily use more hours add no credibility
+KINDS = {"critic", "audience"}
 
 
 @dataclass
@@ -32,25 +34,36 @@ class Review:
 
     @property
     def weight(self) -> float:
-        return 1 + math.log1p(max(self.hours, 0))
+        return 1 + math.log1p(min(max(self.hours, 0), MAX_HOURS))  # capped: one claim can't swing a score
 
 
 def load_reviews(items: list[dict]) -> list[Review]:
     if not isinstance(items, list) or not all(isinstance(i, dict) for i in items):
         raise ValueError("reviews must be a JSON list of review objects")
-    return [
-        Review(
-            i["model"],
-            i["reviewer"],
-            i.get("kind", "audience"),
-            float(i["rating"]),
-            i.get("tags", []),
-            float(i.get("hours", 0)),
-            i.get("text", ""),
-            datetime.fromisoformat(i["ts"]),
+    out = []
+    for i in items:
+        rating, hours = float(i["rating"]), float(i.get("hours", 0))
+        kind = str(i.get("kind", "audience")).strip().lower()
+        if not (math.isfinite(rating) and 0 <= rating <= 5):
+            raise ValueError(f"rating must be 0-5, got {i['rating']!r}")
+        if not (math.isfinite(hours) and hours >= 0):
+            raise ValueError(f"hours must be a finite number >= 0, got {i.get('hours')!r}")
+        if kind not in KINDS:
+            raise ValueError(f"kind must be one of {sorted(KINDS)}, got {i.get('kind')!r}")
+        reviewer = " ".join(str(i["reviewer"]).split()).casefold()  # "Alice" and "alice " are one reviewer
+        out.append(
+            Review(
+                i["model"],
+                reviewer,
+                kind,
+                rating,
+                i.get("tags", []),
+                hours,
+                i.get("text", ""),
+                datetime.fromisoformat(i["ts"]),
+            )
         )
-        for i in items
-    ]
+    return out
 
 
 def _shingles(text, k=3):

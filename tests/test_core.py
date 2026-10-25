@@ -63,6 +63,20 @@ class Tests(unittest.TestCase):
         self.assertEqual(s["rejected"], 1 + 6 + 1)
         self.assertIsNone(s["audience"])
 
+    def test_one_inflated_hours_claim_cannot_swing_the_meter(self):
+        honest = [rv(reviewer=f"c{i}", rating=5, hours=200, text=f"good model number {i} here") for i in range(4)]
+        shill = rv(reviewer="shill", rating=1, hours=1e300, text="worst model ever made today")
+        self.assertGreaterEqual(scores(load_reviews([*honest, shill]))["M"]["tomatometer"], 70)
+
+    def test_reviewer_identity_is_normalised(self):
+        items = [rv(reviewer="Alice", text="first take on it"), rv(reviewer=" alice ", text="second take on it")]
+        self.assertEqual(scores(load_reviews(items))["M"]["rejected"], 1)
+
+    def test_bad_ratings_hours_and_kinds_are_rejected(self):
+        for bad in ({"rating": 50}, {"rating": float("nan")}, {"hours": -3}, {"kind": "influencer"}):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                load_reviews([{**rv(), **bad}])
+
 
 if __name__ == "__main__":
     unittest.main()
