@@ -36,6 +36,8 @@ class Review:
 
 
 def load_reviews(items: list[dict]) -> list[Review]:
+    if not isinstance(items, list) or not all(isinstance(i, dict) for i in items):
+        raise ValueError("reviews must be a JSON list of review objects")
     return [
         Review(
             i["model"],
