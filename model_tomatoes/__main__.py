@@ -11,7 +11,7 @@ def _fmt(v):
     return "--" if v is None else f"{v}%"
 
 
-def _run(argv=None):
+def build_parser():
     ap = argparse.ArgumentParser(prog="model-tomatoes")
     sub = ap.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("scores")
@@ -19,6 +19,11 @@ def _run(argv=None):
     m = sub.add_parser("model")
     m.add_argument("reviews")
     m.add_argument("name")
+    return ap
+
+
+def _run(argv=None):
+    ap = build_parser()
     a = ap.parse_args(argv)
     with open(a.reviews, encoding="utf-8-sig") as fh:
         sc = scores(load_reviews(json.load(fh)))

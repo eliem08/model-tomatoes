@@ -23,6 +23,7 @@ dev = ["ruff>=0.6"]
 
 [project.scripts]
 model-tomatoes = "model_tomatoes.__main__:main"
+model-tomatoes-web = "model_tomatoes.web:main"
 
 [project.urls]
 Repository = "https://github.com/eliem08/model-tomatoes"

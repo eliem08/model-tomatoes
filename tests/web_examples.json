@@ -1,0 +1,21 @@
+[
+ {
+  "op": "scores",
+  "payload": {
+   "reviews": {
+    "name": "reviews.json",
+    "content": "[\n  {\"model\": \"Nova-3\", \"reviewer\": \"ana\", \"kind\": \"critic\", \"rating\": 4.5, \"tags\": [\"coding\", \"agents\"], \"hours\": 120, \"text\": \"Best agentic coder I've used, rarely loses the plot on long tasks.\", \"ts\": \"2026-10-02T10:00:00\"},\n  {\"model\": \"Nova-3\", \"reviewer\": \"bo\", \"kind\": \"critic\", \"rating\": 2.5, \"tags\": [\"writing\"], \"hours\": 40, \"text\": \"Prose is flat and repetitive.\", \"ts\": \"2026-10-03T10:00:00\"},\n  {\"model\": \"Nova-3\", \"reviewer\": \"cy\", \"kind\": \"critic\", \"rating\": 4.0, \"tags\": [\"coding\"], \"hours\": 300, \"text\": \"Refactors big repos well.\", \"ts\": \"2026-10-04T10:00:00\"},\n  {\"model\": \"Nova-3\", \"reviewer\": \"dee\", \"kind\": \"audience\", \"rating\": 5, \"tags\": [\"coding\"], \"hours\": 3, \"text\": \"love it\", \"ts\": \"2026-10-05T10:00:00\"},\n  {\"model\": \"Atlas-1.5\", \"reviewer\": \"ana\", \"kind\": \"critic\", \"rating\": 4.0, \"tags\": [\"writing\"], \"hours\": 80, \"text\": \"Lovely long-form writing voice.\", \"ts\": \"2026-09-01T10:00:00\"},\n  {\"model\": \"Atlas-1.5\", \"reviewer\": \"eve\", \"kind\": \"audience\", \"rating\": 3.0, \"tags\": [\"rag\"], \"hours\": 10, \"text\": \"Okay for RAG, hallucinates citations sometimes.\", \"ts\": \"2026-09-02T10:00:00\"}\n]\n"
+   }
+  }
+ },
+ {
+  "op": "model",
+  "payload": {
+   "reviews": {
+    "name": "reviews.json",
+    "content": "[\n  {\"model\": \"Nova-3\", \"reviewer\": \"ana\", \"kind\": \"critic\", \"rating\": 4.5, \"tags\": [\"coding\", \"agents\"], \"hours\": 120, \"text\": \"Best agentic coder I've used, rarely loses the plot on long tasks.\", \"ts\": \"2026-10-02T10:00:00\"},\n  {\"model\": \"Nova-3\", \"reviewer\": \"bo\", \"kind\": \"critic\", \"rating\": 2.5, \"tags\": [\"writing\"], \"hours\": 40, \"text\": \"Prose is flat and repetitive.\", \"ts\": \"2026-10-03T10:00:00\"},\n  {\"model\": \"Nova-3\", \"reviewer\": \"cy\", \"kind\": \"critic\", \"rating\": 4.0, \"tags\": [\"coding\"], \"hours\": 300, \"text\": \"Refactors big repos well.\", \"ts\": \"2026-10-04T10:00:00\"},\n  {\"model\": \"Nova-3\", \"reviewer\": \"dee\", \"kind\": \"audience\", \"rating\": 5, \"tags\": [\"coding\"], \"hours\": 3, \"text\": \"love it\", \"ts\": \"2026-10-05T10:00:00\"},\n  {\"model\": \"Atlas-1.5\", \"reviewer\": \"ana\", \"kind\": \"critic\", \"rating\": 4.0, \"tags\": [\"writing\"], \"hours\": 80, \"text\": \"Lovely long-form writing voice.\", \"ts\": \"2026-09-01T10:00:00\"},\n  {\"model\": \"Atlas-1.5\", \"reviewer\": \"eve\", \"kind\": \"audience\", \"rating\": 3.0, \"tags\": [\"rag\"], \"hours\": 10, \"text\": \"Okay for RAG, hallucinates citations sometimes.\", \"ts\": \"2026-09-02T10:00:00\"}\n]\n"
+   },
+   "name": "Nova-3"
+  }
+ }
+]
