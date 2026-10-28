@@ -47,7 +47,7 @@ To sell self-serve, set four variables and point a Stripe webhook at `https://<y
 |---|---|
 | `STRIPE_SECRET_KEY` | `sk_live_...` |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` |
-| `STRIPE_PRICES` | `team=price_123,business=price_456` |
+| `STRIPE_PRICES` | `community=price_123,pro=price_456,vendor-insights=price_789` |
 | `PUBLIC_URL` | `https://model-tomatoes.example.com` |
 
 Buyers pick a plan on `/pricing`, pay on Stripe Checkout and see their API key once on the success page. Cancelling the subscription revokes the key. A selling server always requires a key.
@@ -59,10 +59,12 @@ Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless
 | Plan | Price | Includes |
 |---|---|---|
 | **Community** | $29 per month | Run your own review board; Integrity filters; Use-case scores |
-| **Pro** | $149 per month | Embeddable meters; Reviewer credibility tuning; Exports |
-| **Vendor Insights** | $999 per month | Competitive review analytics; Alerts; Priority support |
+| **Pro** | $149 per month | Everything in Community; Commercial use |
+| **Vendor Insights** | $999 per month | Everything in Pro; Competitive review analytics; Priority support |
 
 To start a trial or buy a plan, [request access](https://github.com/eliem08/model-tomatoes/issues/new?title=Model%20Tomatoes%20trial&labels=sales).
+
+Plan note, owner decision on merge: there is no feature gating by plan in the code — every API key unlocks the same software (scores, model detail). Pro's embeddable meters are not built — the web app sends `X-Frame-Options: DENY`, and embeddable badges are listed as roadmap — and reviewer credibility tuning is not built either (the weight is a fixed log-of-hours formula, capped at 2,000 hours, with no tuning parameter); both have been removed from the sales copy. Vendor Insights' alerts are not built and have been removed; competitive review analytics is real in the scores table, which ranks every model in the feed side by side.
 
 ## Licence
 
@@ -106,6 +108,7 @@ python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\act
 pip install -e ".[dev]"
 python -m unittest discover -s tests -t .           # unit + CLI smoke tests
 ruff check . && ruff format --check .               # lint + format
+python -m pip wheel . --no-deps -w dist            # customer wheel, as in Quickstart
 ```
 
 ```
