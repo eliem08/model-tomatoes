@@ -94,6 +94,22 @@ model-tomatoes scores examples/reviews.json
 model-tomatoes model examples/reviews.json "Nova-3"
 ```
 
+## Collect reviews
+
+Reviews can be collected one at a time into a store, then scored without a file. One review per reviewer
+per model: a second one replaces the first. Reviewers cannot declare themselves critics; only the operator
+grants that.
+
+```bash
+model-tomatoes critic-add ana
+model-tomatoes review Nova-3 --reviewer ana --rating 4.5 --text "Strong on long agent tasks" --hours 200
+model-tomatoes scores            # scores the collected store
+model-tomatoes model Nova-3
+```
+
+The store is `reviews-store.json` (or `--store`, or `MODEL_TOMATOES_STORE`). `model` now takes the model
+name first and the reviews file second.
+
 ## Roadmap
 
 - Verified usage via API-key-signed attestations (proof you actually used it)
