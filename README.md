@@ -18,7 +18,8 @@ Customers receive a release archive with the wheel and the examples. Python 3.10
 ```bash
 pip install model_tomatoes-0.1.0-py3-none-any.whl
 model-tomatoes scores examples/reviews.json
-model-tomatoes model examples/reviews.json Nova-3
+model-tomatoes model Nova-3 examples/reviews.json
+model-tomatoes critic-add ana --store reviews-store.json
 ```
 
 ## Web app and API
@@ -33,7 +34,7 @@ docker build -t model-tomatoes . && docker run -p 8000:8000 -e API_KEYS=sk_... -
 
 Every API call needs `Authorization: Bearer <key>` once any key exists; a server on a public address refuses to start without one. Calls are rate-limited per key (60/min, `--rate`) and metered: `model-tomatoes-web usage` prints calls per key for billing.
 
-Endpoints: `POST /api/scores`, `POST /api/model`, plus `GET /healthz` and `GET /api/spec` (machine-readable field list).
+Endpoints: `POST /api/scores`, `POST /api/model`, `POST /api/review`, `POST /api/critic-add`, plus `GET /healthz` and `GET /api/spec` (machine-readable field list).
 Files are sent as `{"name": ..., "content": ...}`, folders as `{"files": [...]}` or a base64 zip.
 
 ## Deploy and sell

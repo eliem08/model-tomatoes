@@ -16,7 +16,7 @@ from model_tomatoes.__main__ import main
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 COMMANDS = [
     ["scores", "{root}/examples/reviews.json"],
-    ["model", "{root}/examples/reviews.json", "Nova-3"],
+    ["model", "Nova-3", "{root}/examples/reviews.json"],
 ]
 
 

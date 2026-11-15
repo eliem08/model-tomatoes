@@ -4,6 +4,7 @@ import json
 import os
 import sys
 
+from .collect import Store
 from .core import load_reviews, scores
 
 
@@ -14,19 +15,45 @@ def _fmt(v):
 def build_parser():
     ap = argparse.ArgumentParser(prog="model-tomatoes")
     sub = ap.add_subparsers(dest="cmd", required=True)
+    store = os.environ.get("MODEL_TOMATOES_STORE", "reviews-store.json")
+    src = "a reviews JSON file; omit to score the collected store"
     s = sub.add_parser("scores")
-    s.add_argument("reviews")
+    s.add_argument("reviews", nargs="?", help=src)
     m = sub.add_parser("model")
-    m.add_argument("reviews")
     m.add_argument("name")
+    m.add_argument("reviews", nargs="?", help=src)
+    r = sub.add_parser("review", help="collect one review (one per reviewer per model; a repeat updates it)")
+    r.add_argument("model")
+    r.add_argument("--reviewer", required=True)
+    r.add_argument("--rating", type=float, required=True, help="0-5")
+    r.add_argument("--text", default="")
+    r.add_argument("--tags", nargs="*", default=[])
+    r.add_argument("--hours", type=float, default=0, help="hours of real use")
+    c = sub.add_parser("critic-add", help="grant critic status (only the operator can, reviewers cannot claim it)")
+    c.add_argument("name")
+    for p in (s, m, r, c):
+        p.add_argument("--store", default=store)
     return ap
 
 
 def _run(argv=None):
     ap = build_parser()
     a = ap.parse_args(argv)
-    with open(a.reviews, encoding="utf-8-sig") as fh:
-        sc = scores(load_reviews(json.load(fh)))
+    if a.cmd in ("review", "critic-add"):
+        st = Store(a.store)
+        if a.cmd == "review":
+            msg = st.add_review(a.model, a.reviewer, a.rating, a.text, a.tags, a.hours)
+        else:
+            msg = f"{a.name}: {'now a critic' if st.add_critic(a.name) else 'already a critic'}"
+        st.save()
+        print(msg)
+        return 0
+    if a.reviews:
+        with open(a.reviews, encoding="utf-8-sig") as fh:
+            items = json.load(fh)
+    else:
+        items = Store(a.store).doc["reviews"]
+    sc = scores(load_reviews(items))
     if a.cmd == "scores":
         print(f"{'model':<14}{'tomatometer':>12}{'audience':>10}  label")
         for name, s in sorted(sc.items(), key=lambda kv: -(kv[1]["tomatometer"] or 0)):
